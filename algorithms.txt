@@ -1,0 +1,17 @@
+Algorithm: INSERT(root, value)
+Input: Root node, value to insert
+Output: Updated tree with new value
+
+IF root is NULL THEN
+    RETURN new Node(value)
+END IF
+
+IF value < root.value THEN
+    root.left = INSERT(root.left, value)
+ELSE IF value > root.value THEN
+    root.right = INSERT(root.right, value)
+END IF
+
+RETURN root
+
+Note: If value == root.value, we don't insert (no duplicates)
