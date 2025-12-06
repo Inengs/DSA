@@ -54,7 +54,7 @@ func peek() {
 }
 
 
-// implementation of linear queue using data structure
+// implementation of linear queue using singly linked-list
 type Node struct {
 	Value int
 	Next  *Node
@@ -114,4 +114,61 @@ func (q *Queue) Peek() {
 	} else {
 		fmt.Printf("%d", q.front.Value)
 	}
+}
+
+// using stacks
+type Stack []int
+
+type QueueForStack struct {
+	inStack  Stack
+	outStack Stack
+}
+
+func (s *Stack) Push(v int) {
+	*s = append(*s, v)
+}
+
+func (s *Stack) Pop() int {
+	if len(*s) == 0 {
+		return -1 // or error handling
+	}
+	n := len(*s)
+	val := (*s)[n-1]
+	*s = (*s)[:n-1]
+	return val
+}
+
+func (s *Stack) IsEmpty() bool {
+	return len(*s) == 0
+}
+
+func (q *QueueForStack) Enqueue(v int) {
+	q.inStack.Push(v)
+}
+
+
+func (q *QueueForStack) Dequeue() int {
+	// If outStack is empty, move everything from inStack
+	if q.outStack.IsEmpty() {
+		for !q.inStack.IsEmpty() {
+			val := q.inStack.Pop()
+			q.outStack.Push(val)
+		}
+	}
+
+	// Now outStack has the oldest element at its top
+	return q.outStack.Pop()
+}
+
+func (q *QueueForStack) Front() int {
+	if q.outStack.IsEmpty() {
+		for !q.inStack.IsEmpty() {
+			val := q.inStack.Pop()
+			q.outStack.Push(val)
+		}
+	}
+
+	// Top of outStack is the front of queue
+	n := len(q.outStack)
+	return q.outStack[n-1]
 }

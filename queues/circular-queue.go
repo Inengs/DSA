@@ -2,6 +2,7 @@ package queues
 
 import "fmt"
 
+// implementation using arrays
 func enqueueCircular(x int) {
 	if front == -1 && rear == -1 {
 		front = 0
@@ -39,4 +40,53 @@ func displayCircular() {
 			i = (i+1)%maxSize
 		}
 	}
+}
+
+// implementation using linked-lists
+func (q *Queue) EnqueueCircular(value int) {
+	newNode := &Node{Value: value, Next: nil}
+
+	if q.rear == nil {
+		q.front = newNode
+		q.rear = newNode
+		q.rear.Next = q.front
+	} else {
+		q.rear.Next = newNode
+		q.rear = newNode
+		q.rear.Next = q.front 
+	}
+}
+
+func(q *Queue) DequeueCircular() {
+	if q.front == nil {
+		return
+	}
+
+	// If only one element
+	if q.front == q.rear {
+		q.front = nil
+		q.rear = nil
+		return
+	}
+
+	// Move front forward
+	q.front = q.front.Next
+	q.rear.Next = q.front // maintain circle
+}
+
+func (q *Queue) DisplayCircular() {
+	if q.front == nil {
+		fmt.Println("Queue is empty")
+		return
+	}
+
+	temp := q.front
+	for {
+		fmt.Printf("%d ", temp.Value)
+		temp = temp.Next
+		if temp == q.front {
+			break
+		}
+	}
+	fmt.Println()
 }
