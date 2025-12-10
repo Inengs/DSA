@@ -1,4 +1,4 @@
-package main
+package hashtable
 
 // pair represents a key-value pair stored inside a bucket.
 type Pair struct {
